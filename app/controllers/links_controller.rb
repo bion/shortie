@@ -5,7 +5,7 @@ class LinksController < ApplicationController
     if link
       redirect_to link.original_url
     else
-      head status: 404
+      head :not_found
     end
   end
 end
