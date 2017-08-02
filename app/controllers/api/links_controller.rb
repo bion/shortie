@@ -1,10 +1,16 @@
 class Api::LinksController < Api::BaseController
   def create
-    link = Link.new(link_params)
-    link.save
+    CreateLink.register_and_run(link_params, request) do |service|
+      service.on :success do |link|
+        @short_url = GenerateUrl.run(link, request)
+        render status: :created
+      end
 
-    @short_url = GenerateUrl.run(link, request)
-    render status: :created
+      service.on :error do |errors|
+        @errors = errors
+        render status: :bad_request
+      end
+    end
   end
 
   private
