@@ -3,7 +3,8 @@ class Api::LinksController < Api::BaseController
     link = Link.new(link_params)
     link.save
 
-    @short_url = GenerateUrl.run(link)
+    @short_url = GenerateUrl.run(link, request)
+    render status: :created
   end
 
   private
