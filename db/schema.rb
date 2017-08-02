@@ -13,10 +13,10 @@
 ActiveRecord::Schema.define(version: 20170802012116) do
 
   create_table "links", force: :cascade do |t|
-    t.string   "original_url",  null: false
-    t.string   "shortened_url"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.string   "original_url",   null: false
+    t.string   "shortened_name", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
 end
