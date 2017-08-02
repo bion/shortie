@@ -27,5 +27,6 @@ group :test do
   gem 'fabrication'
   gem 'rspec'
   gem 'rspec-rails'
+  gem 'timecop'
   gem 'wisper-rspec'
 end

@@ -3,6 +3,8 @@ require 'securerandom'
 class CreateLink < ServiceBase
   attr_reader :params
 
+  SHORT_NAME_LENGTH = 6
+
   def initialize(params)
     @params = params
   end
@@ -20,8 +22,16 @@ class CreateLink < ServiceBase
   private
 
   def link_params
-    params.has_key?(:short_name) ?
-      params :
-      params.merge(short_name: SecureRandom.hex(6))
+    unless params.has_key?(:short_name)
+      params.merge!(short_name: SecureRandom.hex(SHORT_NAME_LENGTH))
+    end
+
+    if params[:expiration]&.downcase == 'none'
+      params.merge!(expiration: nil)
+    elsif !params.has_key?(:expiration)
+      params.merge!(expiration: 1.week.from_now)
+    end
+
+    params
   end
 end

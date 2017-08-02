@@ -20,6 +20,6 @@ class Api::LinksController < Api::BaseController
   def link_params
     params
       .require(:link)
-      .permit(:original_url, :short_name)
+      .permit(:original_url, :short_name, :expiration)
   end
 end
