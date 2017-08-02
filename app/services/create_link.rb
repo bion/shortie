@@ -1,9 +1,10 @@
-class CreateLink < ServiceBase
-  attr_reader :link_params, :request
+require 'securerandom'
 
-  def initialize(link_params, request)
-    @link_params = link_params
-    @request = request
+class CreateLink < ServiceBase
+  attr_reader :params
+
+  def initialize(params)
+    @params = params
   end
 
   def run
@@ -14,5 +15,13 @@ class CreateLink < ServiceBase
     else
       broadcast :error, link.errors.full_messages
     end
+  end
+
+  private
+
+  def link_params
+    params.has_key?(:short_name) ?
+      params :
+      params.merge(short_name: SecureRandom.hex(6))
   end
 end

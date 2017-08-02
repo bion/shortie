@@ -11,36 +11,54 @@ describe 'POST to /api/links', type: :request do
   end
 
   context 'valid parameters' do
-    def post_valid_params
-      post api_links_path,
-        params: { link: valid_link_params }.to_json,
-        headers: json_headers
+    context 'short_name unspecified' do
+      def post_valid_params
+        post api_links_path,
+          params: { link: valid_link_params.slice(:original_url) }.to_json,
+          headers: json_headers
+      end
+
+      it 'creates a link' do
+        expect {
+          post_valid_params
+        }.to change { Link.count }.by(1)
+
+        expect(Link.count).to eq 1
+      end
     end
 
-    it 'creates a link' do
-      expect {
-        post_valid_params
-      }.to change { Link.count }.by(1)
-
-      expect(Link.count).to eq 1
-    end
-
-    context 'after creation' do
-      before do
-        post_valid_params
+    context 'short_name specified' do
+      def post_valid_params
+        post api_links_path,
+          params: { link: valid_link_params }.to_json,
+          headers: json_headers
       end
 
-      it 'returns a JSON response with the shortened url' do
-        expect(JSON.parse(response.body)).to eq \
-          'short_url' => 'http://www.example.com/l/zomcom'
+      it 'creates a link' do
+        expect {
+          post_valid_params
+        }.to change { Link.count }.by(1)
+
+        expect(Link.count).to eq 1
       end
 
-      it 'returns a response with status code 201' do
-        expect(response).to have_http_status(201)
-      end
+      context 'after creation' do
+        before do
+          post_valid_params
+        end
 
-      it 'returns a response with content type json' do
-        expect(response.content_type).to eq('application/json')
+        it 'returns a JSON response with the shortened url' do
+          expect(JSON.parse(response.body)).to eq \
+            'short_url' => 'http://www.example.com/l/zomcom'
+        end
+
+        it 'returns a response with status code 201' do
+          expect(response).to have_http_status(201)
+        end
+
+        it 'returns a response with content type json' do
+          expect(response.content_type).to eq('application/json')
+        end
       end
     end
   end
