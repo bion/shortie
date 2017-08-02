@@ -68,8 +68,6 @@ class CreateLink < ServiceBase
       random_length += 1
       random = random_of_length(random_length)
 
-      puts random
-
       if random_length > 12
         raise 'Unable to find non-colliding short_name for link!'
       end
