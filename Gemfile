@@ -20,3 +20,8 @@ group :development, :test do
   gem 'pry-stack_explorer'
   gem 'byebug', platform: :mri
 end
+
+group :test do
+  gem 'rspec'
+  gem 'rspec-rails'
+end
