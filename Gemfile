@@ -5,6 +5,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'puma', '~> 3.0'
 gem 'rails', '~> 5.0.0'
 gem 'sqlite3'
+gem 'wisper'
 
 group :development do
   gem 'listen', '~> 3.0.5'
@@ -26,4 +27,5 @@ group :test do
   gem 'fabrication'
   gem 'rspec'
   gem 'rspec-rails'
+  gem 'wisper-rspec'
 end
