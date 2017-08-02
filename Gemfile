@@ -22,6 +22,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'fabrication'
   gem 'rspec'
   gem 'rspec-rails'
 end
