@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170802040115) do
+ActiveRecord::Schema.define(version: 20170802043721) do
 
   create_table "links", force: :cascade do |t|
     t.string   "original_url", null: false
     t.string   "short_name",   null: false
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.datetime "expiration"
+    t.index ["expiration"], name: "index_links_on_expiration"
     t.index ["short_name"], name: "index_links_on_short_name"
   end
 

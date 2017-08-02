@@ -16,4 +16,14 @@ describe Link do
       expect(link).to_not be_valid
     end
   end
+
+  describe 'the default scope' do
+    let!(:expired_link) { Fabricate.create(:link, expiration: 1.day.ago) }
+    let!(:wont_expire_link) { Fabricate.create(:link, expiration: nil) }
+    let!(:will_expire_link) { Fabricate.create(:link, expiration: 1.day.from_now) }
+
+    it 'does not include expired links' do
+      expect(Link.all).to match_array([wont_expire_link, will_expire_link])
+    end
+  end
 end
