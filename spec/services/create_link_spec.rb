@@ -16,12 +16,42 @@ describe CreateLink do
     end
   end
 
-  context "expiration is set to 'none'" do
+  context "expiration_type is set to 'days'" do
     let(:link_params) do
       {
         original_url: 'zombo.com',
         short_name: 'foo',
-        expiration: 'none'
+        expiration_type: 'days',
+        expiration_units: 14
+      }
+    end
+
+    before do
+      Timecop.freeze
+    end
+
+    after do
+      Timecop.return
+    end
+
+    it "sets the link's expiration to expiration_units from today" do
+      subject = CreateLink.new(link_params)
+
+      subject.on :success do |link|
+        expect(link).to be_valid
+        expect(link.expiration).to eq 2.weeks.from_now
+      end
+
+      expect { subject.run }.to broadcast(:success)
+    end
+  end
+
+  context "expiration_type is set to 'none'" do
+    let(:link_params) do
+      {
+        original_url: 'zombo.com',
+        short_name: 'foo',
+        expiration_type: 'none'
       }
     end
 
@@ -37,7 +67,7 @@ describe CreateLink do
     end
   end
 
-  context 'expiration is not set' do
+  context 'expiration_type is not set' do
     let(:link_params) { { original_url: 'zombo.com', short_name: 'foo' } }
 
     before do

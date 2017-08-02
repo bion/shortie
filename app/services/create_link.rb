@@ -5,6 +5,13 @@ class CreateLink < ServiceBase
 
   SHORT_NAME_LENGTH = 6
 
+  PARAM_LIST = %i[
+    original_url
+    short_name
+    expiration_type
+    expiration_units
+  ]
+
   def initialize(params)
     @params = params
   end
@@ -22,16 +29,34 @@ class CreateLink < ServiceBase
   private
 
   def link_params
+    link_params = params.slice(:short_name, :original_url)
+
     unless params.has_key?(:short_name)
-      params.merge!(short_name: SecureRandom.hex(SHORT_NAME_LENGTH))
+      link_params.merge!(short_name: SecureRandom.hex(SHORT_NAME_LENGTH))
     end
 
-    if params[:expiration]&.downcase == 'none'
-      params.merge!(expiration: nil)
-    elsif !params.has_key?(:expiration)
-      params.merge!(expiration: 1.week.from_now)
+    if no_expiration_specified?
+      link_params.merge!(expiration: 1.week.from_now)
+    elsif expiration_type_days?
+      days = params[:expiration_units] || 7
+
+      link_params.merge!(expiration: days.days.from_now)
+    elsif does_not_expire?
+      link_params.merge!(expiration: nil)
     end
 
-    params
+    link_params
+  end
+
+  def no_expiration_specified?
+    !params.has_key?(:expiration_type)
+  end
+
+  def expiration_type_days?
+    params[:expiration_type]&.downcase == 'days'
+  end
+
+  def does_not_expire?
+    params[:expiration_type]&.downcase == 'none'
   end
 end
