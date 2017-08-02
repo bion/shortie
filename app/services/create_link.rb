@@ -31,10 +31,19 @@ class CreateLink < ServiceBase
   def link_params
     link_params = params.slice(:short_name, :original_url)
 
+    resolve_short_name(link_params)
+    resolve_expiration(link_params)
+
+    link_params
+  end
+
+  def resolve_short_name(link_params)
     unless params.has_key?(:short_name)
       link_params.merge!(short_name: generate_short_name)
     end
+  end
 
+  def resolve_expiration(link_params)
     if no_expiration_specified?
       link_params.merge!(expiration: 1.week.from_now)
     elsif expiration_type_days?
@@ -44,8 +53,6 @@ class CreateLink < ServiceBase
     elsif does_not_expire?
       link_params.merge!(expiration: nil)
     end
-
-    link_params
   end
 
   def no_expiration_specified?
