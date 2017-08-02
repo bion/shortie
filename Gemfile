@@ -22,6 +22,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'database_cleaner'
   gem 'fabrication'
   gem 'rspec'
   gem 'rspec-rails'
