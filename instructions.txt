@@ -1,0 +1,33 @@
+We are going to build a web service that acts as the API for URL shortening platform. If you are not familiar with them, URL shortening platforms generate short, friendly and easy-to-share urls (e.g. http://tiny.cc/boundless-map) which point to otherwise unfriendly long addresses. 
+
+Here are some of the features of our service: 
+
+    There is an endpoint which can be used to generate a short url for a given url.
+
+    There is an endpoint to find out the original url from a short url.
+
+    The short urls we create are as short as possible but not shorter than 6 characters.
+
+    The short urls we create are somewhat random. We do not want scripts or bots crawling the urls we serve.
+
+    We want to support the ability to use a custom name as a short urls (e.g. http://localhost:3000/boundless-map).
+
+    By default our short urls will work for only one week but users can customize the number of days the url will be working including the option to have them live forever.
+
+
+Here are a few things to keep in mind while working on this exercise: 
+
+    Make sure to follow REST practices. 
+
+    Preferred data type to use in requests and responses is JSON.
+
+    You can choose the names of the endpoints and parameters as you see fit.
+
+    You can use the language and framework you’re most comfortable with but make sure to include a README.md with the full instructions for starting and running your service.
+
+    Feel free to make assumptions about the parts of the problem that are not explicitly mentioned here and make sure to document these assumptions. 
+
+    Include any tests or any extra code you have written to verify your solution with your submission.
+
+
+There is no hard time limit on this exercise but we estimate it to complete in ~4 hours. Once you feel like you are complete or once you reach 4 hours, you can send us your work with any notes you think are necessary. You can either put your code into a public github repo (to be removed once the exercise is complete) or put into a zip file (including your .git directory) and email back to us. 
