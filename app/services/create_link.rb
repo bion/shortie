@@ -32,7 +32,7 @@ class CreateLink < ServiceBase
     link_params = params.slice(:short_name, :original_url)
 
     unless params.has_key?(:short_name)
-      link_params.merge!(short_name: SecureRandom.hex(SHORT_NAME_LENGTH))
+      link_params.merge!(short_name: generate_short_name)
     end
 
     if no_expiration_specified?
@@ -58,5 +58,27 @@ class CreateLink < ServiceBase
 
   def does_not_expire?
     params[:expiration_type]&.downcase == 'none'
+  end
+
+  def generate_short_name
+    random_length = SHORT_NAME_LENGTH
+    random = random_of_length(random_length)
+
+    while Link.find_by(short_name: random)
+      random_length += 1
+      random = random_of_length(random_length)
+
+      puts random
+
+      if random_length > 12
+        raise 'Unable to find non-colliding short_name for link!'
+      end
+    end
+
+    random
+  end
+
+  def random_of_length(length)
+    SecureRandom.hex(6)[0...length]
   end
 end

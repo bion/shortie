@@ -14,6 +14,23 @@ describe CreateLink do
 
       expect { subject.run }.to broadcast(:success)
     end
+
+    context 'generated hex collides with database record' do
+      before do
+        allow(Link).to receive(:find_by)
+          .and_return(*(1..6).to_a.push(nil))
+      end
+
+      it 'increases the length of the hex up to six times' do
+        subject = CreateLink.new(link_params)
+
+        subject.on :success do |link|
+          expect(link).to be_valid
+        end
+
+        expect { subject.run }.to broadcast(:success)
+      end
+    end
   end
 
   context "expiration_type is set to 'days'" do
