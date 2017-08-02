@@ -1,4 +1,5 @@
 Rails.application.configure do
+  config.include_port_in_url_generation = false
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
